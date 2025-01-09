@@ -1,10 +1,12 @@
 package net.codejava.ProductManager;
 
+import jakarta.validation.Valid;
 import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,12 +35,12 @@ public class AppController {
         return "new_product";
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveProduct(@ModelAttribute("product") Product product) {
-        service.save(product);
-
-        return "redirect:/";
-    }
+//    @RequestMapping(value = "/save", method = RequestMethod.POST)
+//    public String saveProduct(@ModelAttribute("product") Product product) {
+//        service.save(product);
+//
+//        return "redirect:/";
+//    }
     @RequestMapping("/edit/{id}")
     public ModelAndView showEditProductPage(@PathVariable(name = "id") int id) {
         ModelAndView mav = new ModelAndView("edit_product");
@@ -80,6 +82,19 @@ public class AppController {
 
         return "register_success";
     }
+    @PostMapping("/save")
+    public String saveProduct(@Valid @ModelAttribute("product") Product product, BindingResult result) {
+        // Check for validation errors
+        if (result.hasErrors()) {
+            return "new_product"; // Return to the form view if validation fails
+        }
+
+        // Save the product if validation passes
+        service.save(product);
+        return "redirect:/"; // Redirect to the home page
+    }
+
+
 
 
 }
