@@ -29,6 +29,8 @@ public class Product {
     @Min(value = 0, message = "Price cannot be negative")
     private float price;
 
+
+
     // Getter and Setter for id
     public Long getId() {
         return id;

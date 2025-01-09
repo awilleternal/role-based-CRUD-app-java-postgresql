@@ -1,10 +1,9 @@
 package net.codejava.ProductManager;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
-public interface UserRepository extends CrudRepository<User, Integer> {
-    @Query("SELECT u FROM User u WHERE u.username = :username")
-    public User getUserByUsername(@Param("username") String username);
+public interface UserRepository extends JpaRepository<User, Long> {
+    // Lookup user by email, returning an Optional
+    Optional<User> findByEmail(String email);
 }

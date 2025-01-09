@@ -1,10 +1,11 @@
 package net.codejava.ProductManager;
-import jakarta.persistence.*;
 
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users_roles")
 public class UserRoles {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -16,7 +17,6 @@ public class UserRoles {
     private int roleId;
 
     // Getters and Setters
-
     public int getId() {
         return id;
     }
@@ -40,4 +40,5 @@ public class UserRoles {
     public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
+
 }

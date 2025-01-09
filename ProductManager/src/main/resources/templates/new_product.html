@@ -1,52 +1,28 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <title>Create New Product</title>
+    <meta charset="utf-8"/>
+    <title>New Product</title>
 </head>
 <body>
 <div align="center">
     <h1>Create New Product</h1>
-    <br />
-    <form action="#" th:action="@{/save}" th:object="${product}" method="post">
-        <table border="0" cellpadding="10">
-            <tr>
-                <td>Product Name:</td>
-                <td>
-                    <input type="text" th:field="*{name}" />
-                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red;"></div>
-                </td>
-            </tr>
-            <tr>
-                <td>Brand:</td>
-                <td>
-                    <input type="text" th:field="*{brand}" />
-                    <div th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}" style="color:red;"></div>
-                </td>
-            </tr>
-            <tr>
-                <td>Made In:</td>
-                <td>
-                    <input type="text" th:field="*{madein}" />
-                    <div th:if="${#fields.hasErrors('madein')}" th:errors="*{madein}" style="color:red;"></div>
-                </td>
-            </tr>
-            <tr>
-                <td>Price:</td>
-                <td>
-                    <input type="text" th:field="*{price}" />
-                    <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color:red;"></div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <button type="submit">Save</button>
-                </td>
-            </tr>
-        </table>
-    </form>
 
+    <form th:action="@{/save}" th:object="${product}" method="post">
+        <label for="name">Product Name:</label>
+        <input type="text" id="name" th:field="*{name}" /><br/><br/>
+
+        <label for="brand">Brand:</label>
+        <input type="text" id="brand" th:field="*{brand}" /><br/><br/>
+
+        <label for="madein">Made In:</label>
+        <input type="text" id="madein" th:field="*{madein}" /><br/><br/>
+
+        <label for="price">Price:</label>
+        <input type="number" id="price" th:field="*{price}" /><br/><br/>
+
+        <input type="submit" value="Create Product" />
+    </form>
 </div>
 </body>
 </html>

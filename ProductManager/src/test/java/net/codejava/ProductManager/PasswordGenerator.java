@@ -1,12 +1,21 @@
 package net.codejava.ProductManager;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class PasswordGenerator {
-    public static void main(String[] args) {
-        BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
-        String rp="pass3";
-        String ep= encoder.encode(rp);
-        System.out.println(ep);
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+        String rp = "pass3";
+
+        // Using SHA-256 for hashing
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = digest.digest(rp.getBytes());
+        StringBuilder hexString = new StringBuilder();
+
+        for (byte b : hashBytes) {
+            hexString.append(String.format("%02x", b));
+        }
+
+        System.out.println(hexString.toString());  // Printing the hashed password
     }
 }

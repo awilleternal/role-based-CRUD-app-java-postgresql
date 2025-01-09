@@ -22,13 +22,16 @@ public class User {
     @Column(nullable = false)
     private Boolean enabled;
 
+    @Column(name = "role",nullable = false)
+    private String Role;
 
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "users_roles", // Match table name from database
-            joinColumns = @JoinColumn(name = "user_id"), // Fix annotation syntax
-            inverseJoinColumns = @JoinColumn(name = "role_id") // Fix annotation syntax
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>(); // Initialize Set properly
 
@@ -95,5 +98,13 @@ public class User {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getRole() {
+        return Role;
+    }
+
+    public void setRole(String role) {
+        Role = role;
     }
 }
