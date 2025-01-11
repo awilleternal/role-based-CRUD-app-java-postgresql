@@ -11,6 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Objects;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
 
 @Controller
 public class AppController {
@@ -37,7 +40,7 @@ public class AppController {
 
         // Pass the user and roles to the model for the frontend
         model.addAttribute("user", user);
-
+        System.out.println(session.getId());
         List<Product> listProducts = service.listAll();
         model.addAttribute("listProducts", listProducts);
         return "index";
@@ -69,8 +72,14 @@ public class AppController {
 
     // Logout
     @RequestMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate(); // Invalidate session
+    public String logout(HttpSession session,HttpServletResponse response) {
+        session.invalidate();
+        Cookie cookie = new Cookie("JSESSIONID", null); // Name of the session cookie
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true); // Set this to true if using HTTPS
+        cookie.setPath("/");
+        cookie.setMaxAge(0); // Delete the cookie
+        response.addCookie(cookie);// Invalidate session
         return "redirect:/login"; // Redirect to login page after logout
     }
 
