@@ -4,15 +4,60 @@
 <head>
     <meta charset="utf-8" />
     <title>Edit Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        div {
+            margin: auto;
+            padding: 20px;
+            max-width: 500px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin: 4px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
-<div align="center">
+<div>
     <h1>Edit Product</h1>
-    <br />
-    <form action="#" th:action="@{/save}" th:object="${product}"
-          method="post">
-
-        <table border="0" cellpadding="10">
+    <form action="#" th:action="@{/save}" th:object="${product}" method="post">
+        <table>
             <tr>
                 <td>Product ID:</td>
                 <td>
@@ -38,7 +83,9 @@
                 <td><input type="text" th:field="*{price}" /></td>
             </tr>
             <tr>
-                <td colspan="2"><button type="submit">Save</button> </td>
+                <td colspan="2">
+                    <button type="submit">Save</button>
+                </td>
             </tr>
         </table>
     </form>

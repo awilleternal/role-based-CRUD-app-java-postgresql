@@ -3,74 +3,166 @@
 <head>
   <meta charset="utf-8"/>
   <title>Product Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: #333;
+    }
+
+    .auth-links, .welcome-message {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .auth-links a {
+      margin: 0 10px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .auth-links a:hover {
+      text-decoration: underline;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    table th {
+      background-color: #f8f8f8;
+      color: #333;
+    }
+
+    table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .action-links a {
+      margin: 0 5px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .action-links a:hover {
+      text-decoration: underline;
+    }
+
+    .create-link {
+      display: block;
+      margin: 10px auto 20px;
+      text-align: center;
+      color: #28a745;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .create-link:hover {
+      text-decoration: underline;
+    }
+
+    form {
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    input[type="submit"] {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #c82333;
+    }
+  </style>
 </head>
 <body>
-<div align="center">
-  <div>
-    <!-- Register Link for Unauthenticated Users -->
-    <div th:if="${user == null}">
-      <a href="/login">Login</a> |
-      <a href="/register">Register</a>
-    </div>
-
-    <!-- Display Welcome Message for Authenticated Users -->
-    <div th:if="${user != null}">
-      <p>Welcome, <b th:text="${user.username}">Username</b>
-        <b th:text="${user.role}">Username</b>
-        <b th:text="${user}">Username</b>!</p>
-      <p>Your roles:</p>
-      <p th:if="${user.roles == null}">No roles assigned</p>
-      <ul>
-        <li th:each="role : ${user.roles}" th:text="${role.name}">Role Name</li>
-      </ul>
-      <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Logout" />
-      </form>
-    </div>
-
-    <!-- Title -->
+<div class="container">
+  <div class="header">
     <h1>Product List</h1>
-
-    <!-- Create New Product Link for CREATOR or ADMIN -->
-    <div th:if="${user != null and user.role=='admin'}">
-      <a th:href="@{/new}">Create New Product</a>
-    </div>
-    <br/><br/>
-
-    <!-- Product Table -->
-    <table border="1" cellpadding="10">
-      <thead>
-      <tr>
-        <th>Product ID</th>
-        <th>Name</th>
-        <th>Brand</th>
-        <th>Made In</th>
-        <th>Price</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <!-- Iterate Over List of Products -->
-      <tr th:each="product : ${listProducts}">
-        <td th:text="${product.id}">Product ID</td>
-        <td th:text="${product.name}">Name</td>
-        <td th:text="${product.brand}">Brand</td>
-        <td th:text="${product.madein}">Made in</td>
-        <td th:text="${product.price}">Price</td>
-        <td>
-          <!-- Edit Link for EDITOR or ADMIN -->
-          <div th:if="${user != null and user.role=='admin'}">
-            <a th:href="@{/edit/{id}(id=${product.id})}">Edit</a>
-          </div>
-          &nbsp;&nbsp;&nbsp;
-          <!-- Delete Link for ADMIN -->
-          <div th:if="${user != null and user.role=='admin'}">
-            <a th:href="@{/delete/{id}(id=${product.id})}">Delete</a>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
   </div>
+
+  <div class="auth-links" th:if="${user == null}">
+    <a href="/login">Login</a> |
+    <a href="/register">Register</a>
+  </div>
+
+  <div class="welcome-message" th:if="${user != null}">
+    <p>Welcome, <b th:text="${user.username}">Username</b>!</p>
+    <p>Your roles: <b th:text="${user.role}">Role</b></p>
+    <form th:action="@{/logout}" method="post">
+      <input type="submit" value="Logout" />
+    </form>
+    <form th:action="@{/change_password}" method="get">
+      <button type="submit">Change Password</button>
+    </form>
+  </div>
+
+  <a class="create-link" th:if="${user != null and user.role=='admin'}" th:href="@{/new}">Create New Product</a>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Product ID</th>
+      <th>Name</th>
+      <th>Brand</th>
+      <th>Made In</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${listProducts}">
+      <td th:text="${product.id}">Product ID</td>
+      <td th:text="${product.name}">Name</td>
+      <td th:text="${product.brand}">Brand</td>
+      <td th:text="${product.madein}">Made in</td>
+      <td th:text="${product.price}">Price</td>
+      <td class="action-links">
+        <div th:if="${user != null and user.role=='admin'}">
+          <a th:href="@{/edit/{id}(id=${product.id})}">Edit</a>
+          <a th:href="@{/delete/{id}(id=${product.id})}">Delete</a>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 </body>
 </html>

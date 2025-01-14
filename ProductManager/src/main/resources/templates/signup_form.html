@@ -6,54 +6,78 @@
   <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
   <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
   <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      margin-top: 50px;
+      padding: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    h1 {
+      color: #343a40;
+      margin-bottom: 30px;
+    }
+    .form-group label {
+      font-weight: bold;
+      color: #495057;
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 10px;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
 <div class="container text-center">
-  <div>
-    <h1>User Registration - Sign Up</h1>
-  </div>
+  <h1>User Registration - Sign Up</h1>
   <form th:action="@{/process_register}" th:object="${user}" method="post" style="max-width: 600px; margin: 0 auto;">
-    <div class="m-3">
-      <!-- Full Name -->
-      <div class="form-group row">
-        <label class="col-4 col-form-label">Full Name: </label>
-        <div class="col-8">
-          <input type="text" th:field="*{fullName}" class="form-control"
-                 required minlength="3" maxlength="50" />
-        </div>
+    <!-- Full Name -->
+    <div class="form-group row">
+      <label class="col-4 col-form-label text-right">Full Name:</label>
+      <div class="col-8">
+        <input type="text" th:field="*{fullName}" class="form-control"
+               required minlength="3" maxlength="50" placeholder="Enter your full name" />
       </div>
+    </div>
 
-      <!-- Username -->
-      <div class="form-group row">
-        <label class="col-4 col-form-label">Username: </label>
-        <div class="col-8">
-          <input type="text" th:field="*{username}" class="form-control"
-                 required minlength="3" maxlength="20" />
-        </div>
+    <!-- Username -->
+    <div class="form-group row">
+      <label class="col-4 col-form-label text-right">Username:</label>
+      <div class="col-8">
+        <input type="text" th:field="*{username}" class="form-control"
+               required minlength="3" maxlength="20" placeholder="Enter your username" />
       </div>
+    </div>
 
-      <!-- Email -->
-      <div class="form-group row">
-        <label class="col-4 col-form-label">E-mail: </label>
-        <div class="col-8">
-          <input type="email" th:field="*{email}" class="form-control"
-                 required />
-        </div>
+    <!-- Email -->
+    <div class="form-group row">
+      <label class="col-4 col-form-label text-right">E-mail:</label>
+      <div class="col-8">
+        <input type="email" th:field="*{email}" class="form-control"
+               required placeholder="Enter your email address" />
       </div>
+    </div>
 
-      <!-- Password -->
-      <div class="form-group row">
-        <label class="col-4 col-form-label">Password: </label>
-        <div class="col-8">
-          <input type="password" th:field="*{password}" class="form-control"
-                 required minlength="6" maxlength="20" />
-        </div>
+    <!-- Password -->
+    <div class="form-group row">
+      <label class="col-4 col-form-label text-right">Password:</label>
+      <div class="col-8">
+        <input type="password" th:field="*{password}" class="form-control"
+               required minlength="6" maxlength="20" placeholder="Enter your password" />
       </div>
+    </div>
 
-      <!-- Submit Button -->
-      <div>
-        <button type="submit" class="btn btn-primary">Sign Up</button>
-      </div>
+    <!-- Submit Button -->
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary">Sign Up</button>
     </div>
   </form>
 </div>

@@ -12,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,8 +47,9 @@ public class AppControllerTest {
 
     @Mock
     private Model model;
-
+    @Mock
     private User mockUser;
+    @Mock PasswordEncryptionService ps;
 
     @BeforeEach
     public void setup() {
@@ -90,7 +93,7 @@ public class AppControllerTest {
     }
 
     @Test
-    public void testProcessLoginSuccess() {
+    public void testProcessLoginSuccess() throws NoSuchAlgorithmException, InvalidKeySpecException {
         when(userService.loadUserByUsername("test@example.com")).thenReturn(mockUser);
 
         String viewName = appController.processLogin("test@example.com", "password", session);
@@ -101,7 +104,7 @@ public class AppControllerTest {
     }
 
     @Test
-    public void testProcessLoginFailure() {
+    public void testProcessLoginFailure() throws NoSuchAlgorithmException, InvalidKeySpecException {
         when(userService.loadUserByUsername("test@example.com")).thenReturn(null);
 
         String viewName = appController.processLogin("test@example.com", "wrongpassword", session);
@@ -127,7 +130,7 @@ public class AppControllerTest {
     }
 
     @Test
-    public void testProcessRegister() {
+    public void testProcessRegister() throws NoSuchAlgorithmException, InvalidKeySpecException {
         Role userRole = new Role();
         userRole.setId(1);
 
