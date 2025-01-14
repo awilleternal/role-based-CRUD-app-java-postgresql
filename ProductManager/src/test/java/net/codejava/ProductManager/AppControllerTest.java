@@ -12,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -93,7 +95,7 @@ private  PasswordEncryptionService ps;
     }
 
     @Test
-    public void testProcessLoginSuccess() {
+    public void testProcessLoginSuccess() throws NoSuchAlgorithmException, InvalidKeySpecException {
         when(userService.loadUserByUsername("test@example.com")).thenReturn(mockUser);
 
         String viewName = appController.processLogin("test@example.com", "password", session);
