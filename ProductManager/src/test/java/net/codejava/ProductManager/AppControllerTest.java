@@ -36,6 +36,9 @@ public class AppControllerTest {
 
     @Mock
     private UserDetailsServiceImpl userService;
+@Mock
+private  PasswordEncryptionService ps;
+
 
     @Mock
     private HttpSession session;
@@ -45,7 +48,7 @@ public class AppControllerTest {
 
     @Mock
     private Model model;
-
+    @Mock
     private User mockUser;
 
     @BeforeEach
