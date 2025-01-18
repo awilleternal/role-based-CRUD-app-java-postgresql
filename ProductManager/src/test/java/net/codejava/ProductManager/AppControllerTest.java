@@ -38,8 +38,7 @@ public class AppControllerTest {
 
     @Mock
     private UserDetailsServiceImpl userService;
-@Mock
-private  PasswordEncryptionService ps;
+
 
 
     @Mock
@@ -52,6 +51,8 @@ private  PasswordEncryptionService ps;
     private Model model;
     @Mock
     private User mockUser;
+    @Mock
+    private  PasswordEncryptionService ps;
 
     @BeforeEach
     public void setup() {
@@ -96,23 +97,48 @@ private  PasswordEncryptionService ps;
 
     @Test
     public void testProcessLoginSuccess() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        // Mocking the behavior of dependencies
         when(userService.loadUserByUsername("test@example.com")).thenReturn(mockUser);
+        when(ps.verifyPassword(anyString(), anyString())).thenReturn(true);
 
+        // Calling the method under test
         String viewName = appController.processLogin("test@example.com", "password", session);
 
+        // Verifying the result and interactions
         assertEquals("redirect:/", viewName);
         verify(session).setAttribute("user", mockUser);
         verify(session).setAttribute("role", "admin");
     }
 
+
     @Test
-    public void testProcessLoginFailure() {
+    public void testProcessRegister() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        Role userRole = new Role();
+        userRole.setId(1);
+
+        when(userRepository.save(any(User.class))).thenReturn(mockUser);
+        when(ps.hashPassword(anyString())).thenReturn("hashedPassword");
+
+        String viewName = appController.processRegister(mockUser);
+
+        assertEquals("register_success", viewName);
+        verify(userRepository).save(mockUser);
+        verify(userRolesRepository).save(any(UserRoles.class));
+    }
+
+
+    @Test
+    public void testProcessLoginFailure() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        // Simulating the behavior when the user is not found
         when(userService.loadUserByUsername("test@example.com")).thenReturn(null);
 
+        // Calling the method under test
         String viewName = appController.processLogin("test@example.com", "wrongpassword", session);
 
+        // Verifying that the user is redirected to the login page on failure
         assertEquals("login", viewName);
     }
+
 
     @Test
     public void testLogout() {
@@ -131,19 +157,7 @@ private  PasswordEncryptionService ps;
         verify(model).addAttribute(eq("user"), any(User.class));
     }
 
-    @Test
-    public void testProcessRegister() {
-        Role userRole = new Role();
-        userRole.setId(1);
 
-        when(userRepository.save(any(User.class))).thenReturn(mockUser);
-
-        String viewName = appController.processRegister(mockUser);
-
-        assertEquals("register_success", viewName);
-        verify(userRepository).save(mockUser);
-        verify(userRolesRepository).save(any(UserRoles.class));
-    }
 
     @Test
     public void testShowNewProductPageWithAdmin() {
