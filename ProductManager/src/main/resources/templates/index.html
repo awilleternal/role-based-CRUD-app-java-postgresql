@@ -19,6 +19,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .navbar .brand {
@@ -28,7 +29,7 @@
 
     .navbar .links a {
       color: white;
-      margin: 0 10px;
+      margin: 0 15px;
       text-decoration: none;
       font-size: 1em;
     }
@@ -37,19 +38,49 @@
       text-decoration: underline;
     }
 
+    /* Search Form in Navbar */
+    .navbar .search-form {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar .search-form input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 200px;
+      font-size: 0.9em;
+    }
+
+    .navbar .search-form button {
+      padding: 8px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+
+    .navbar .search-form button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Container styles */
     .container {
       width: 90%;
       max-width: 1200px;
       margin: 20px auto;
       padding: 20px;
-      background-color: #ffffff;
+      background-color: white;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
     .header h1 {
@@ -60,8 +91,10 @@
     .welcome-message {
       margin-bottom: 20px;
       text-align: center;
+      color: #555;
     }
 
+    /* Table styles */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -100,7 +133,7 @@
 
     .create-link {
       display: block;
-      margin: 10px auto 20px;
+      margin: 20px auto;
       text-align: center;
       color: #28a745;
       font-weight: bold;
@@ -111,6 +144,7 @@
       text-decoration: underline;
     }
 
+    /* Button styles */
     .btn {
       background-color: #dc3545;
       color: white;
@@ -136,22 +170,20 @@
     <a href="/register" th:if="${user == null}">Register</a>
     <a href="/profile" th:if="${user != null}">Profile</a>
     <a href="/logout" th:if="${user != null}">Logout</a>
-    <!-- Search Form -->
-    <div class="search-container">
-      <form th:action="@{/search}" method="get" style="text-align: center; margin-bottom: 20px;">
-        <input type="text" name="query" placeholder="Search products..." style="padding: 8px; width: 200px;" />
-        <select name="filterBy" style="padding: 8px;">
-          <option value="name">Name</option>
-          <option value="brand">Brand</option>
-        </select>
-        <button type="submit" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Search</button>
-      </form>
-    </div>
-
   </div>
+
+  <!-- Search Form in Navbar -->
+  <form th:action="@{/search}" method="get" class="search-form">
+    <input
+            type="text"
+            name="query"
+            placeholder="Search by Name, Brand, or Made In"
+    />
+    <button type="submit">Search</button>
+  </form>
 </div>
 
-<!-- Main Content -->
+<!-- Product Table -->
 <div class="container">
   <div class="header">
     <h1>Product List</h1>
@@ -192,5 +224,6 @@
     </tbody>
   </table>
 </div>
+
 </body>
 </html>

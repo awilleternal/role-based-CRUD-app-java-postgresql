@@ -23,12 +23,9 @@ public class ProductService {
     public void delete(Long id){
         repo.deleteById(id);
     }
-    public List<Product> findByNameContaining(String name) {
-        return repo.findByNameContainingIgnoreCase(name);
+    public List<Product> searchByQuery(String query) {
+        return repo.findByNameContainingOrBrandContainingOrMadeinContaining(query, query, query);
     }
 
-    public List<Product> findByBrandContaining(String brand) {
-        return repo.findByBrandContainingIgnoreCase(brand);
-    }
 
 }

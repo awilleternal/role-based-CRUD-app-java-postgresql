@@ -226,37 +226,18 @@ public class AppController {
         return "redirect:/profile?success";
     }
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String searchProducts(
-            @RequestParam(value = "query", required = false) String query,
-            @RequestParam(value = "filterBy", required = false) String filterBy,
-            Model model,
-            HttpSession session) {
+    public String searchProducts(@RequestParam("query") String query, Model model, HttpSession session) {
         User user = getLoggedInUser(session);
         if (user == null) {
             return "redirect:/login";
         }
 
-        // Filter products based on query and filterBy
-        List<Product> filteredProducts;
-        if (query != null && filterBy != null) {
-            switch (filterBy) {
-                case "name":
-                    filteredProducts = service.findByNameContaining(query);
-                    break;
-                case "brand":
-                    filteredProducts = service.findByBrandContaining(query);
-                    break;
-                default:
-                    filteredProducts = service.listAll();
-            }
-        } else {
-            filteredProducts = service.listAll(); // Default to all products
-        }
-
-        model.addAttribute("listProducts", filteredProducts);
+        List<Product> filteredProducts = service.searchByQuery(query);
         model.addAttribute("user", user);
+        model.addAttribute("listProducts", filteredProducts);
         return "index";
     }
+
 
 
 
