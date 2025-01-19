@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 10px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        section {
+            margin-bottom: 20px;
+        }
+        h2 {
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #4CAF50;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"], select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        p {
+            margin: 10px 0;
+        }
+        .success-message {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome, <span th:text="${user.fullName}"></span>!</h1>
+</header>
+
+<main>
+    <!-- User Details Section -->
+    <section>
+        <h2>Your Details</h2>
+        <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+        <p><strong>Role:</strong> <span th:text="${user.role}"></span></p>
+    </section>
+
+    <!-- Profile Update Section -->
+    <section>
+        <h2>Update Profile</h2>
+        <form th:action="@{/update_profile}" method="post">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" th:value="${user.username}" required>
+
+            <label for="role">Role:</label>
+            <select id="role" name="role" th:value="${user.role}">
+                <option value="user" th:selected="${user.role == 'user'}">User</option>
+                <option value="admin" th:selected="${user.role == 'admin'}">Admin</option>
+            </select>
+
+            <label for="passkey">Enter Passkey:</label>
+            <input type="text" id="passkey" name="passkey" placeholder="Enter passkey to change role" required>
+
+            <button type="submit">Update Profile</button>
+        </form>
+        <p th:if="${param.success}" class="success-message">Profile updated successfully!</p>
+        <p th:if="${param.error}" class="error-message" style="color: red;">Invalid passkey. Please try again.</p>
+    </section>
+
+
+    <!-- Password Change Section -->
+    <section>
+        <h2>Account Management</h2>
+        <form th:action="@{/change_password}" method="get">
+            <button type="submit">Change Password</button>
+        </form>
+    </section>
+
+    <!-- Additional Links -->
+    <section>
+        <div>
+            <a href="/logout">Logout</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

@@ -23,5 +23,9 @@ public class ProductService {
     public void delete(Long id){
         repo.deleteById(id);
     }
+    public List<Product> searchByQuery(String query) {
+        return repo.findByNameContainingOrBrandContainingOrMadeinContaining(query, query, query);
+    }
+
 
 }

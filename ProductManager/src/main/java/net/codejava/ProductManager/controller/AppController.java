@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class AppController {
-
+public String passkey1="1234";
     @Autowired
     private ProductService service;
 
@@ -190,6 +190,59 @@ public class AppController {
         user.setPassword(ps.hashPassword(newPassword));
         userRepo.save(user);
         return "password_change_success";
+    }
+    @RequestMapping("/profile")
+    public String showProfilePage(Model model, HttpSession session) {
+        // Get the logged-in user
+        User user = getLoggedInUser(session);
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        // Pass the user to the model for the frontend
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
+    @PostMapping("/update_profile")
+    public String updateProfile(
+            @RequestParam("username") String username,
+            @RequestParam("role") String role,
+            @RequestParam("passkey") String passkey, // Add passkey parameter
+            HttpSession session) {
+
+        // Get the logged-in user
+        User user = getLoggedInUser(session);
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        // Check if the entered passkey matches the predefined passkey
+        if (!passkey1.equals(passkey)) {
+            return "redirect:/profile?error=invalidPasskey"; // Redirect back with an error
+        }
+
+        // Update the user's details
+        user.setUsername(username);
+        user.setRole(role);
+        userRepo.save(user);
+
+        // Update the session with the new details
+        session.setAttribute("user", user);
+
+        return "redirect:/profile?success"; // Redirect with success message
+    }
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String searchProducts(@RequestParam("query") String query, Model model, HttpSession session) {
+        User user = getLoggedInUser(session);
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        List<Product> filteredProducts = service.searchByQuery(query);
+        model.addAttribute("user", user);
+        model.addAttribute("listProducts", filteredProducts);
+        return "index";
     }
 
 

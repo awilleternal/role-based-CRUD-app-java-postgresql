@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8" />
   <title>Product Manager</title>
   <style>
     body {
@@ -11,18 +11,76 @@
       background-color: #f4f4f9;
     }
 
+    /* Navbar styles */
+    .navbar {
+      background-color: #007bff;
+      padding: 10px 20px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .brand {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .navbar .links a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-size: 1em;
+    }
+
+    .navbar .links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Search Form in Navbar */
+    .navbar .search-form {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar .search-form input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 200px;
+      font-size: 0.9em;
+    }
+
+    .navbar .search-form button {
+      padding: 8px 15px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+
+    .navbar .search-form button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Container styles */
     .container {
-      width: 80%;
-      margin: 0 auto;
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto;
       padding: 20px;
-      background-color: #ffffff;
+      background-color: white;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
     .header h1 {
@@ -30,28 +88,21 @@
       color: #333;
     }
 
-    .auth-links, .welcome-message {
+    .welcome-message {
       margin-bottom: 20px;
       text-align: center;
+      color: #555;
     }
 
-    .auth-links a {
-      margin: 0 10px;
-      color: #007bff;
-      text-decoration: none;
-    }
-
-    .auth-links a:hover {
-      text-decoration: underline;
-    }
-
+    /* Table styles */
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
     }
 
-    table th, table td {
+    table th,
+    table td {
       border: 1px solid #ddd;
       padding: 10px;
       text-align: center;
@@ -82,7 +133,7 @@
 
     .create-link {
       display: block;
-      margin: 10px auto 20px;
+      margin: 20px auto;
       text-align: center;
       color: #28a745;
       font-weight: bold;
@@ -93,12 +144,8 @@
       text-decoration: underline;
     }
 
-    form {
-      display: inline-block;
-      margin-top: 10px;
-    }
-
-    input[type="submit"] {
+    /* Button styles */
+    .btn {
       background-color: #dc3545;
       color: white;
       border: none;
@@ -107,34 +154,48 @@
       cursor: pointer;
     }
 
-    input[type="submit"]:hover {
+    .btn:hover {
       background-color: #c82333;
     }
   </style>
 </head>
 <body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="brand">Product Manager</div>
+  <form th:action="@{/search}" method="get" class="search-form">
+    <input
+            type="text"
+            name="query"
+            placeholder="Search by Name, Brand, or Made In"
+    />
+    <button type="submit">Search</button>
+  </form>
+  <div class="links">
+    <a href="/" th:if="${user == null}">Home</a>
+    <a href="/login" th:if="${user == null}">Login</a>
+    <a href="/register" th:if="${user == null}">Register</a>
+    <a href="/profile" th:if="${user != null}">Profile</a>
+    <a href="/logout" th:if="${user != null}">Logout</a>
+  </div>
+
+  <!-- Search Form in Navbar -->
+
+</div>
+
+<!-- Product Table -->
 <div class="container">
   <div class="header">
     <h1>Product List</h1>
   </div>
 
-  <div class="auth-links" th:if="${user == null}">
-    <a href="/login">Login</a> |
-    <a href="/register">Register</a>
-  </div>
-
   <div class="welcome-message" th:if="${user != null}">
     <p>Welcome, <b th:text="${user.username}">Username</b>!</p>
     <p>Your roles: <b th:text="${user.role}">Role</b></p>
-    <form th:action="@{/logout}" method="post">
-      <input type="submit" value="Logout" />
-    </form>
-    <form th:action="@{/change_password}" method="get">
-      <button type="submit">Change Password</button>
-    </form>
   </div>
 
-  <a class="create-link" th:if="${user != null and user.role=='admin'}" th:href="@{/new}">Create New Product</a>
+  <a class="create-link" th:if="${user != null and user.role == 'admin'}" th:href="@{/new}">Create New Product</a>
 
   <table>
     <thead>
@@ -155,7 +216,7 @@
       <td th:text="${product.madein}">Made in</td>
       <td th:text="${product.price}">Price</td>
       <td class="action-links">
-        <div th:if="${user != null and user.role=='admin'}">
+        <div th:if="${user != null and user.role == 'admin'}">
           <a th:href="@{/edit/{id}(id=${product.id})}">Edit</a>
           <a th:href="@{/delete/{id}(id=${product.id})}">Delete</a>
         </div>
@@ -164,5 +225,6 @@
     </tbody>
   </table>
 </div>
+
 </body>
 </html>
