@@ -63,8 +63,7 @@ public class AppController {
     @PostMapping("/process_login")
     public String processLogin(@RequestParam String email, @RequestParam String password, HttpSession session) throws NoSuchAlgorithmException, InvalidKeySpecException {
         User user = userService.loadUserByUsername(email);
-        System.out.println();
-        System.out.println(user.getRole());
+
 
 
         if (user != null && ps.verifyPassword(password,user.getPassword())){
