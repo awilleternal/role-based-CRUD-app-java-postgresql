@@ -1,14 +1,6 @@
 package net.codejava.ProductManager;
 
 import jakarta.servlet.http.Cookie;
-import net.codejava.ProductManager.controller.AppController;
-import net.codejava.ProductManager.entity.Product;
-
-import net.codejava.ProductManager.entity.User;
-import net.codejava.ProductManager.repository.UserRepository;
-import net.codejava.ProductManager.service.PasswordEncryptionService;
-import net.codejava.ProductManager.service.ProductService;
-import net.codejava.ProductManager.service.UserDetailsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,7 +33,8 @@ public class AppControllerTest {
     @Mock
     private UserRepository userRepository;
 
-
+    @Mock
+    private UserRolesRepository userRolesRepository;
 
     @Mock
     private UserDetailsServiceImpl userService;
@@ -58,7 +52,7 @@ public class AppControllerTest {
     @Mock
     private User mockUser;
     @Mock
-    private PasswordEncryptionService ps;
+    private  PasswordEncryptionService ps;
 
     @BeforeEach
     public void setup() {
@@ -119,7 +113,8 @@ public class AppControllerTest {
 
     @Test
     public void testProcessRegister() throws NoSuchAlgorithmException, InvalidKeySpecException {
-
+        Role userRole = new Role();
+        userRole.setId(1);
 
         when(userRepository.save(any(User.class))).thenReturn(mockUser);
         when(ps.hashPassword(anyString())).thenReturn("hashedPassword");
@@ -127,7 +122,8 @@ public class AppControllerTest {
         String viewName = appController.processRegister(mockUser);
 
         assertEquals("register_success", viewName);
-
+        verify(userRepository).save(mockUser);
+        verify(userRolesRepository).save(any(UserRoles.class));
     }
 
 

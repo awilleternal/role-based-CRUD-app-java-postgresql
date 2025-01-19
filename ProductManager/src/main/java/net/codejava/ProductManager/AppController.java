@@ -1,15 +1,10 @@
-package net.codejava.ProductManager.controller;
+package net.codejava.ProductManager;
 
-import net.codejava.ProductManager.entity.Product;
-
-import net.codejava.ProductManager.entity.User;
-import net.codejava.ProductManager.repository.UserRepository;
-import net.codejava.ProductManager.service.PasswordEncryptionService;
-import net.codejava.ProductManager.service.ProductService;
-import net.codejava.ProductManager.service.UserDetailsServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,12 +26,13 @@ public class AppController {
 
     @Autowired
     private UserRepository userRepo;
-
+    @Autowired
+    private UserRolesRepository userRolesRepo;
 
     @Autowired
     private UserDetailsServiceImpl userService;
     @Autowired
-    private PasswordEncryptionService ps;
+    private  PasswordEncryptionService ps;
 
     // Home Page
     @RequestMapping("/")
@@ -63,9 +59,6 @@ public class AppController {
     @PostMapping("/process_login")
     public String processLogin(@RequestParam String email, @RequestParam String password, HttpSession session) throws NoSuchAlgorithmException, InvalidKeySpecException {
         User user = userService.loadUserByUsername(email);
-        System.out.println();
-        System.out.println(user.getRole());
-
 
         if (user != null && ps.verifyPassword(password,user.getPassword())){
             // stored user in ssession
@@ -74,7 +67,7 @@ public class AppController {
 
 
             System.out.println("User: " + user.getUsername());
-
+            System.out.println("Roles: " + user.getRoles());
             return "redirect:/"; // Successful login, redirect to home
         }
 
@@ -106,7 +99,9 @@ public class AppController {
         user.setEnabled(true);
 
 
-        user.setRole("user");
+        Role userRole = new Role();
+        userRole.setId(1);
+        user.getRoles().add(userRole);
         String s=user.getPassword();
         s=ps.hashPassword(s);
         user.setPassword(s);
@@ -116,7 +111,10 @@ public class AppController {
         userRepo.save(user);
 
 
-
+        UserRoles userRoles = new UserRoles();
+        userRoles.setUserId(user.getID());
+        userRoles.setRoleId(4);
+        userRolesRepo.save(userRoles);
 
         return "register_success";
     }
@@ -161,7 +159,14 @@ public class AppController {
     }
 
 
-
+    private boolean hasRole(User user, String... roles) {
+        for (String role : roles) {
+            if (user.getRoles().stream().anyMatch(r -> r.getName().equals(role))) {
+                return true;
+            }
+        }
+        return false;
+    }
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public String saveProduct(@ModelAttribute("product") Product product) {
         service.save(product);

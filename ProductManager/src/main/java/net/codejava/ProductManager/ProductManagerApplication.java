@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
-@EntityScan("net.codejava.ProductManager")//scan for jpa entity class with @entity which rep database orm
+@EntityScan("net.codejava.ProductManager")
 public class ProductManagerApplication {
 
 	public static void main(String[] args) {

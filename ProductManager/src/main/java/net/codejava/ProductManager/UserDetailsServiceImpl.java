@@ -1,9 +1,9 @@
-package net.codejava.ProductManager.service;
+package net.codejava.ProductManager;
 
-import net.codejava.ProductManager.entity.User;
-import net.codejava.ProductManager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl {

@@ -1,7 +1,6 @@
-package net.codejava.ProductManager.entity;
+package net.codejava.ProductManager;
 
 import jakarta.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set; // Import for Set
 
@@ -34,7 +33,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-
+    private Set<Role> roles = new HashSet<>(); // Initialize Set properly
 
     // Getters and Setters
     public Integer getID() {
@@ -69,8 +68,13 @@ public class User {
         this.enabled = enabled;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
-
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     public String getEmail() {
         return email;
