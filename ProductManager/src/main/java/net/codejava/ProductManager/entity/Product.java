@@ -1,12 +1,8 @@
-package net.codejava.ProductManager;
+package net.codejava.ProductManager.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Min;
-
-
-import java.util.Objects;
 
 @Entity
 public class Product {

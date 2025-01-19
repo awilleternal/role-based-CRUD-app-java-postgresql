@@ -1,4 +1,4 @@
-package net.codejava.ProductManager;
+package net.codejava.ProductManager.service;
 
 
 import org.springframework.stereotype.Service;

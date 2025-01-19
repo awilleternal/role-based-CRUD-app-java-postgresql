@@ -1,5 +1,6 @@
 package net.codejava.ProductManager;
 
+import net.codejava.ProductManager.service.PasswordEncryptionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
