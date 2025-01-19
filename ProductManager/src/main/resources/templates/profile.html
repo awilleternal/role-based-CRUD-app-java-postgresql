@@ -103,10 +103,15 @@
                 <option value="admin" th:selected="${user.role == 'admin'}">Admin</option>
             </select>
 
+            <label for="passkey">Enter Passkey:</label>
+            <input type="text" id="passkey" name="passkey" placeholder="Enter passkey to change role" required>
+
             <button type="submit">Update Profile</button>
         </form>
         <p th:if="${param.success}" class="success-message">Profile updated successfully!</p>
+        <p th:if="${param.error}" class="error-message" style="color: red;">Invalid passkey. Please try again.</p>
     </section>
+
 
     <!-- Password Change Section -->
     <section>

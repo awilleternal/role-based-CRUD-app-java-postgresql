@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class AppController {
-
+public String passkey1="1234";
     @Autowired
     private ProductService service;
 
@@ -208,11 +208,18 @@ public class AppController {
     public String updateProfile(
             @RequestParam("username") String username,
             @RequestParam("role") String role,
+            @RequestParam("passkey") String passkey, // Add passkey parameter
             HttpSession session) {
+
         // Get the logged-in user
         User user = getLoggedInUser(session);
         if (user == null) {
             return "redirect:/login";
+        }
+
+        // Check if the entered passkey matches the predefined passkey
+        if (!passkey1.equals(passkey)) {
+            return "redirect:/profile?error=invalidPasskey"; // Redirect back with an error
         }
 
         // Update the user's details
@@ -223,7 +230,7 @@ public class AppController {
         // Update the session with the new details
         session.setAttribute("user", user);
 
-        return "redirect:/profile?success";
+        return "redirect:/profile?success"; // Redirect with success message
     }
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String searchProducts(@RequestParam("query") String query, Model model, HttpSession session) {
@@ -237,9 +244,6 @@ public class AppController {
         model.addAttribute("listProducts", filteredProducts);
         return "index";
     }
-
-
-
 
 
 }
