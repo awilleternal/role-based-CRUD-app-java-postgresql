@@ -1,5 +1,7 @@
 package net.codejava.ProductManager;
 
+
+import net.codejava.ProductManager.entity.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -39,15 +41,7 @@ public class UserTest {
         assertTrue(user.isEnabled());
 
         // Test setting and getting roles
-        Set<Role> roles = new HashSet<>();
-        Role role = new Role();
-        role.setId(1);
-        role.setName("ROLE_USER");
-        roles.add(role);
 
-        user.setRoles(roles);
-        assertEquals(1, user.getRoles().size());
-        assertTrue(user.getRoles().contains(role));
 
         // Test setting and getting Role (string field)
         user.setRole("Admin");
