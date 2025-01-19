@@ -191,6 +191,74 @@ public class AppController {
         userRepo.save(user);
         return "password_change_success";
     }
+    @RequestMapping("/profile")
+    public String showProfilePage(Model model, HttpSession session) {
+        // Get the logged-in user
+        User user = getLoggedInUser(session);
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        // Pass the user to the model for the frontend
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
+    @PostMapping("/update_profile")
+    public String updateProfile(
+            @RequestParam("username") String username,
+            @RequestParam("role") String role,
+            HttpSession session) {
+        // Get the logged-in user
+        User user = getLoggedInUser(session);
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        // Update the user's details
+        user.setUsername(username);
+        user.setRole(role);
+        userRepo.save(user);
+
+        // Update the session with the new details
+        session.setAttribute("user", user);
+
+        return "redirect:/profile?success";
+    }
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String searchProducts(
+            @RequestParam(value = "query", required = false) String query,
+            @RequestParam(value = "filterBy", required = false) String filterBy,
+            Model model,
+            HttpSession session) {
+        User user = getLoggedInUser(session);
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        // Filter products based on query and filterBy
+        List<Product> filteredProducts;
+        if (query != null && filterBy != null) {
+            switch (filterBy) {
+                case "name":
+                    filteredProducts = service.findByNameContaining(query);
+                    break;
+                case "brand":
+                    filteredProducts = service.findByBrandContaining(query);
+                    break;
+                default:
+                    filteredProducts = service.listAll();
+            }
+        } else {
+            filteredProducts = service.listAll(); // Default to all products
+        }
+
+        model.addAttribute("listProducts", filteredProducts);
+        model.addAttribute("user", user);
+        return "index";
+    }
+
+
 
 
 }
