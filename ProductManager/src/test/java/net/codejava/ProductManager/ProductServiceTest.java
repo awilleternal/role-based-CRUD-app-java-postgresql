@@ -3,6 +3,9 @@ package net.codejava.ProductManager;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import net.codejava.ProductManager.entity.Product;
+import net.codejava.ProductManager.repository.ProductRepository;
+import net.codejava.ProductManager.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
